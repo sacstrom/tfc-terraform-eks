@@ -33,6 +33,13 @@ rules:
   - apiGroups: ["apps"]
     resources:
       - namespaces
+    verbs:
+      - get
+      - list
+      - watch
+
+  - apiGroups: ["apps"]
+    resources:
       - deployments
       - replicasets
       - statefulsets
@@ -54,9 +61,6 @@ rules:
       - list
       - watch
       - create
-      - update
-      - patch
-      - delete
 
   - apiGroups: ["s3.services.k8s.aws"]
     resources:
@@ -66,9 +70,6 @@ rules:
       - list
       - watch
       - create
-      - update
-      - patch
-      - delete
 
   - apiGroups: ["services.k8s.aws"]
     resources:

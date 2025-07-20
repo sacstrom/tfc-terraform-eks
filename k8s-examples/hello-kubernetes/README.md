@@ -6,18 +6,20 @@
 *Prerequisites:* Have the EKS cluster, Nginx Ingress Controller, and DNS configuration set up per the instructions in
 the [root README.md](../../README.md).
 
-Change directory to `./k8s-examples/hello-kubernetes/` and apply/verify the Deployment, Service, and
-Ingress K8s configs:
+Change directory to `./k8s-examples/hello-kubernetes/` and create the namespace, then apply/verify the Deployment,
+Service, and Ingress K8s configs:
 
     cd k8s-examples/hello-kubernetes/
+    kubectl apply -f hello-kubernetes-infra.yml
+
     kubectl apply -f hello-kubernetes-deployments.yml
-    kubectl get deployments -n default
+    kubectl get deployments -n demo
 
     kubectl apply -f hello-kubernetes-services.yml
-    kubectl get services -n default
+    kubectl get services -n demo
 
     kubectl apply -f hello-kubernetes-ingress.yml
-    kubectl describe ingress -n default
+    kubectl describe ingress -n demo
 
 Open the address in your browser and expect to be greeted with a "Hello world!" Kubernetes page with SSL encryption,
 deployed on the `/hello-kubernetes/` path (example URL [works](https://eks.mabl.se/hello-kubernetes/)):

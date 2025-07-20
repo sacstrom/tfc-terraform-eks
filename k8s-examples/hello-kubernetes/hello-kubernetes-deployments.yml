@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-kubernetes-on-path
-  namespace: default
+  namespace: demo
 spec:
   replicas: 2
   selector:
@@ -30,7 +30,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-kubernetes-on-subdomain
-  namespace: default
+  namespace: demo
 spec:
   replicas: 2
   selector:
@@ -49,3 +49,4 @@ spec:
               value: "Hello world, @mb-eks-cluster subdomain!"
           ports:
             - containerPort: 8080
+---

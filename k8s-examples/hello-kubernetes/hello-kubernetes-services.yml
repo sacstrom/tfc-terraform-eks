@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-kubernetes-on-path
-  namespace: default
+  namespace: demo
 spec:
   type: NodePort
   ports:
@@ -15,7 +15,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-kubernetes-on-subdomain
-  namespace: default
+  namespace: demo
 spec:
   type: NodePort
   ports:
@@ -23,3 +23,4 @@ spec:
       targetPort: 8080
   selector:
     name: hello-kubernetes-on-subdomain
+---

@@ -3,32 +3,37 @@
 
 ## What will This Do?
 
-This Terraform configuration will setup a EKS cluster in your AWS account, then provision
+This Terraform project will set up a EKS cluster in your AWS account, then provision
 a [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/) for the Kubernetes
-cluster and setup DNS names for it. Finally, it will deploy a couple of deplyoments exposed to the world via
+cluster and setup DNS names for it, then install a few add-ons to make RDS available and make S3/EFS/EBS storage
+available. Finally, it will instruct you how to create a couple of deployments exposed to the world via
 the [Nginx Ingress Controller](https://aws.amazon.com/premiumsupport/knowledge-center/eks-access-kubernetes-services/).
+
 
 ## What are the Pre-Requisites?
 
-You must have an AWS account and provide your AWS Access Key ID and AWS Secret Access Key to Terraform Cloud.
-Terraform Cloud encrypts and stores variables using [Vault](https://www.vaultproject.io/). You must have the AWS
-and Terraform CLIs installed on your local workstation.
+You must have access to an AWS account and be authorized to administer many resources. You must also have
+the AWS and Terraform CLIs installed and configured on your workstation.
 
-The values for `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be saved as environment variables on
-your workspace. For more information on how to store variables in Terraform Cloud,
-see [our variable documentation](https://www.terraform.io/docs/cloud/workspaces/variables.html).
+
+## Continuous Deployment and Detecting Drift
+
+At the end of the setup procedure, we add a Bamboo build plan for rolling out adjustments and get a nice log trail of
+changes over time. This might also be useful for detecting (and aligning?) configuration drift.
+
 
 ## Getting Started
 
-### 1. Initialize the Base Infrastructure
+### Step 1: Initialize the Base Infrastructure
 
-1. Update the `./terraform.tf` to name your Terraform Cloud `organization` and `workspace` names
+1. Update the `./terraform.tf` to name the S3 bucket and key for your Terraform state
 2. Update the `./variables.tf` to use your desired `resource_prefix`, and AWS `account_id` and `region`
 3. Run `terraform init` in the repo root directory
 4. Run `terraform plan && terraform apply` in the repo root and accept the proposed changes if they make sense to you
 5. Open the AWS web console and verify your EKS cluster is up and looking good
-6. Configure your `kubectl` command-line tool to use the new EKS cluster:
+6. Configure your `kubectl` command-line tool to use the new EKS cluster and keeping the credentials in `./.kubeconfig`:
 
+       export KUBECONFIG="$(pwd)/.kubeconfig"
        export AWS_PROFILE=default
        export AWS_REGION=eu-north-1
        export CLUSTER_NAME=mb-eks-cluster
@@ -40,7 +45,7 @@ see [our variable documentation](https://www.terraform.io/docs/cloud/workspaces/
        kubectl apply -f k8s-infra/metrics-server.yaml
 
 
-### 3. Configure the AWS Elastic Block Storage for EKS
+### Step 2: Configure the AWS Elastic Block Storage for EKS
 
 Configure persistent storage using EBS for EKS by following
 the [Amazon EBS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html), summarized below.
@@ -59,7 +64,7 @@ Follow the steps in [./k8s-examples/ebs-storage/README.md](./k8s-examples/ebs-st
 verify that EBS persistent volumes and storage claims can be utilized in your cluster.
 
 
-### 3. Configure the AWS Elastic File System Storage
+### Step 3: Configure the AWS Elastic File System Storage for EKS
 
 Configure persistent storage using EFS for EKS by following
 the [Amazon EFS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html), summarized below.
@@ -97,7 +102,9 @@ Follow the steps in [./k8s-examples/efs-storage/README.md](./k8s-examples/efs-st
 verify that EFS persistent volumes and storage claims can be utilized in your cluster.
 
 
-### 3. Configure the AWS Load Balancer Controller Add-On
+### Step 4: Configure Internet Network Ingress
+
+#### Step 4a: Configure the AWS Load Balancer Controller Add-On
 
 Deploy the AWS Load Balancer Controller by following
 the [Amazon EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html),
@@ -137,13 +144,13 @@ Example success output:
     "aws-load-balancer-controller   2/2     2            2           22h"
 
 
-### 4. Configure the Nginx Ingress Controller for Kubernetes and Verify
+#### Step 4b: Configure the Nginx Ingress Controller for Kubernetes and Verify
 
 Deploy the Nginx Ingress Controller, "Option 1", by following the AWS
 [External Access to Kubernetes](https://aws.amazon.com/premiumsupport/knowledge-center/eks-access-kubernetes-services/)
 services guide, summarized in the following sections.
 
-    kubectl apply -f k8s-infra/deploy-nginx-controller-with-ssl.yaml
+    kubectl apply -f k8s-infra/deploy-nginx-controller-with-ssl-v1.12.1.yaml
 
 Verify that the AWS Load Balancer Controller is running:
 
@@ -158,7 +165,7 @@ Verify that your Kubernetes cluster have ingress classes `alb` and `nginx`:
     kubectl get ingressclass
 
 
-### 5. Configure DNS with Route53 and Verify
+#### Step 4c: Configure DNS with Route53 and Verify
 
 Get the AWS Load Balancer Endpoint created by the Nginx Ingress Controller:
 
@@ -195,7 +202,7 @@ Verify that `curl` receives a Nginx 404 response:
     curl -v http://mb-eks.smithmicro.io
 
 
-### 6. Install Cert-Manager and Configure Certificate Issuer in EKS
+#### Step 4d: Install Cert-Manager and Configure Certificate Issuer in EKS
 
 Install Cert-Manager using Helm:
 
@@ -212,13 +219,13 @@ then apply your certificate issuer manifest:
     kubectl apply -f k8s-infra/letsencrypt-issuers.yaml
 
 
-### 7. Deploy Externally Accessible App to Verify Ingress, Routing and SSL
+#### Step 4e: Verify Internet Network Ingress with DNS and SSL
 
 Follow the setup steps in [./k8s-examples/hello-kubernetes/README.md](./k8s-examples/hello-kubernetes/README.md) to
 deploy the `hello-kubernetes` services and verify that it becomes accessible via the DNS pretty-names with SSL.
 
 
-### 8. Configure the ACK Service Controller for RDS
+### Step 5: Configure the ACK Service Controller for RDS
 
 Install the ACK controller following the
 [Install ACK Service Controller for RDS](https://aws-controllers-k8s.github.io/community/docs/tutorials/rds-example/)
@@ -244,7 +251,7 @@ Follow the setup steps in [./k8s-examples/vs-location/README.md](./k8s-examples/
 deploy a feature complete Node application with persistent storage in a Postgres database on RDS.
 
 
-### 9. Configure the ACK Service Controller for S3
+### Step 6: Configure the ACK Service Controller for S3
 
 Install the ACK controller for S3 following the
 [Install an ACK Service Controller](https://aws-controllers-k8s.github.io/community/docs/user-docs/install/)
@@ -270,7 +277,7 @@ Follow the setup steps in [./k8s-examples/vs-studio/README.md](./k8s-examples/vs
 deploy a feature complete Node application with binary assets on S3.
 
 
-### 10. Configure Access for a DevOps Team
+### Step 7: Configure Access for a DevOps Team
 
 Create the `vs7` namespace and RBAC roles `vs7-developer-global-viewer-role` and `vs7-developer-ns-admin-role`:
 

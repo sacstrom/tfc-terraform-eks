@@ -6,6 +6,9 @@
 *.tfstate.*
 *.tfplan
 
+# MacOS specific files
+.DS_Store
+
 # Crash log files
 crash.log
 
@@ -32,3 +35,5 @@ terraform.rc
 
 # Secrets
 secrets/
+.kubeconfig
+dot-*
