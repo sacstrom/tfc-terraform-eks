@@ -37,3 +37,4 @@ terraform.rc
 secrets/
 .kubeconfig
 dot-*
+.env*
