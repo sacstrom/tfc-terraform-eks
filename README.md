@@ -15,6 +15,12 @@ the [Nginx Ingress Controller](https://aws.amazon.com/premiumsupport/knowledge-c
 You must have access to an AWS account and be authorized to administer many resources. You must also have
 the AWS and Terraform CLIs installed and configured on your workstation.
 
+The setup instruction presumes that you have a profile named `sennco` in your AWS CLI configuration with your secrets
+(`~/.aws/config` and `~/.aws/credentials`) that provides access to the Sennco AWS account. If not, login to the AWS
+console, https://088153174681.signin.aws.amazon.com/console, create a "Command Line Interface (CLI)" type AWS Access Key
+and store it safely. (Verify it works by running `aws sts get-caller-identity --profile sennco` and
+`aws s3 ls s3://sennco-mvp-terraform-eks --profile sennco`.)
+
 
 ## Getting Started
 
