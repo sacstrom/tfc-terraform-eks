@@ -7,9 +7,9 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "bamboo02.smithmicro.net-terraform-state"
-    key    = "mb-eks-cluster/terraform.tfstate"
-    region = "eu-north-1"
+    bucket = "sennco-mvp-terraform-eks"
+    key    = "mvp-dev-cluster/terraform.tfstate"
+    region = "us-east-1"
   }
 
   required_version = ">= 1.3.6"

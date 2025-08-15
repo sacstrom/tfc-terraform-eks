@@ -34,9 +34,9 @@ changes over time. This might also be useful for detecting (and aligning?) confi
 6. Configure your `kubectl` command-line tool to use the new EKS cluster and keeping the credentials in `./.kubeconfig`:
 
        export KUBECONFIG="$(pwd)/.kubeconfig"
-       export AWS_PROFILE=default
-       export AWS_REGION=eu-north-1
-       export CLUSTER_NAME=mb-eks-cluster
+       export AWS_PROFILE=sennco
+       export AWS_REGION=us-east-1
+       export CLUSTER_NAME=mvp-dev-cluster
        aws --profile=$AWS_PROFILE eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
 7. Verify your local configuration with `kubectl cluster-info`
@@ -51,7 +51,7 @@ Configure persistent storage using EBS for EKS by following
 the [Amazon EBS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html), summarized below.
 
 Modify the `./k8s-infra/aws-ebs-csi-driver-service-account.yaml` manifest by
-replacing `"arn:aws:iam::878179636352:role/mb-eks-ebs-csi-driver-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mb-eks-ebs-csi-driver-role"` with your own role ARN:
 
     echo $(terraform output -raw ebs_csi_driver_service_account_iam_role_arn)
 
@@ -70,7 +70,7 @@ Configure persistent storage using EFS for EKS by following
 the [Amazon EFS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html), summarized below.
 
 Modify the `./k8s-infra/aws-efs-csi-driver-service-account.yaml` manifest by
-replacing `"arn:aws:iam::878179636352:role/mb-eks-efs-csi-driver-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mb-eks-efs-csi-driver-role"` with your own role ARN:
 
     echo $(terraform output -raw efs_csi_driver_service_account_iam_role_arn)
 
@@ -79,13 +79,13 @@ Apply the Kubernetes service account configuration for `efs-csi-controller-sa`:
     kubectl apply -f k8s-infra/aws-efs-csi-driver-service-account.yaml
 
 Install the Amazon EFS driver using [Helm V3](https://docs.aws.amazon.com/eks/latest/userguide/helm.html) or later,
-replacing `eu-north-1` with your region:
+replacing `us-east-1` with your region:
 
     helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver
     helm repo update
     helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
       --namespace kube-system \
-      --set image.repository=602401143452.dkr.ecr.eu-north-1.amazonaws.com/eks/aws-efs-csi-driver \
+      --set image.repository=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/aws-efs-csi-driver \
       --set controller.serviceAccount.create=false \
       --set controller.serviceAccount.name=efs-csi-controller-sa
 
@@ -111,7 +111,7 @@ the [Amazon EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/aws
 summarized below.
 
 Modify the `./k8s-infra/aws-load-balancer-controller-service-account.yaml` manifest by
-replacing `"arn:aws:iam::878179636352:role/mb-eks-load-balancer-controller-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mb-eks-load-balancer-controller-role"` with your own role ARN:
 
     echo $(terraform output -raw aws_load_balancer_service_account_iam_role_arn)
 
@@ -173,10 +173,10 @@ Get the AWS Load Balancer Endpoint created by the Nginx Ingress Controller:
 
 Example:
 
-    "k8s-ingressn-ingressn-d7a33e1924-2dcfed4179033b4a.elb.eu-north-1.amazonaws.com"
+    "k8s-ingressn-ingressn-d7a33e1924-2dcfed4179033b4a.elb.us-east-1.amazonaws.com"
 
 Find the matching load balancer in the AWS Web Console under
-[EC2 > Load Balancers](https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#LoadBalancers) and
+[EC2 > Load Balancers](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#LoadBalancers) and
 copy the _Hosted Zone ID_ from the details' view, a string that looks something like `"Z1UDT6IFJ4EJM"`.
 
 Open the [Route 53 > Hosted Zones](https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones#) view in the AWS Web
@@ -235,11 +235,11 @@ Identify your own IAM role ARN for the `ack-rds-controller` service account:
 
     echo $(terraform output -raw ack_rds_controller_service_account_iam_role_arn)
 
-Install the `rds-chart` controller, replacing `"arn:aws:iam::878179636352:role/mb-eks-ack-rds-controller-role"` with
-your own role ARN and `"eu-north-1"` with your own region:
+Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mb-eks-ack-rds-controller-role"` with
+your own role ARN and `"us-east-1"` with your own region:
 
-    export ACK_RDS_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::878179636352:role/mb-eks-ack-rds-controller-role
-    export AWS_REGION=eu-north-1
+    export ACK_RDS_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mb-eks-ack-rds-controller-role
+    export AWS_REGION=us-east-1
     helm install --create-namespace -n ack-system \
       oci://public.ecr.aws/aws-controllers-k8s/rds-chart \
       --version=v0.0.27 \
@@ -261,11 +261,11 @@ Identify your own IAM role ARN for the `ack-rds-controller` service account:
 
     echo $(terraform output -raw ack_s3_controller_service_account_iam_role_arn)
 
-Install the `rds-chart` controller, replacing `"arn:aws:iam::878179636352:role/mb-eks-ack-s3-controller-role"` with
-your own role ARN and `"eu-north-1"` with your own region:
+Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mb-eks-ack-s3-controller-role"` with
+your own role ARN and `"us-east-1"` with your own region:
 
-    export ACK_S3_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::878179636352:role/mb-eks-ack-s3-controller-role
-    export AWS_REGION=eu-north-1
+    export ACK_S3_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mb-eks-ack-s3-controller-role
+    export AWS_REGION=us-east-1
     helm install --create-namespace -n ack-system \
       oci://public.ecr.aws/aws-controllers-k8s/s3-chart \
       --version=v0.1.8 \
@@ -289,7 +289,7 @@ Update your `~/.kube/config-vs7-developer` with credentials for the `vs7-develop
 
     export KUBECONFIG=~/.kube/config-vs7-developer
     aws eks update-kubeconfig --profile smsi --name mb-eks-cluster --alias mb-eks-cluster-vs7-developer \
-      --region eu-north-1 --role-arn arn:aws:iam::878179636352:role/mb-eks-vs7-developer-role
+      --region us-east-1 --role-arn arn:aws:iam::088153174681:role/mb-eks-vs7-developer-role
     # And verify it worked, the command below should output something about cluster name "mb-eks-cluster"
     kubectl cluster-info dump | grep cluster-name | head -n1
 

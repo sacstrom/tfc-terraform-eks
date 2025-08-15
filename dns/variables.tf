@@ -1,16 +1,16 @@
 variable "account_id" {
   description = "AWS account ID"
-  default     = "878179636352"
+  default     = "088153174681"
 }
 
 variable "region" {
   description = "AWS region"
-  default     = "eu-north-1"
+  default     = "us-east-1"
 }
 
 variable "eks_elb_domain" {
   description = "Domain for EKS ELB"
-  default     = "k8s-ingressn-ingressn-d7a33e1924-2dcfed4179033b4a.elb.eu-north-1.amazonaws.com"
+  default     = "k8s-ingressn-ingressn-d7a33e1924-2dcfed4179033b4a.elb.us-east-1.amazonaws.com"
 }
 
 variable "eks_elb_zone_id" {

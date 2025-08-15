@@ -6,4 +6,4 @@ metadata:
     app.kubernetes.io/name: vs
   name: vs
   annotations:
-    services.k8s.aws/default-region: eu-north-1
+    services.k8s.aws/default-region: us-east-1

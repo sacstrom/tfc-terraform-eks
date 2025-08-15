@@ -7,7 +7,7 @@ metadata:
   name: studio-sa
   namespace: vs
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::878179636352:role/mb-eks-viewspot-studio-sa-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::088153174681:role/mb-eks-viewspot-studio-sa-role
 ---
 apiVersion: apps/v1
 kind: Deployment

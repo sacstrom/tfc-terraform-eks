@@ -6,7 +6,7 @@ RDS/S3 set up per the instructions in the [root README.md](../../README.md).
 
 ## 1. Create the App Namespace and Database Credentials
 
-Change directory to `./k8s-examples/vs-studio/`, modify the `0-infra.yml` manifest by replacing `"eu-north-1"`
+Change directory to `./k8s-examples/vs-studio/`, modify the `0-infra.yml` manifest by replacing `"us-east-1"`
 with your own region and create the namespace `"vs"`:
 
     cd k8s-examples/vs-studio/

@@ -20,7 +20,7 @@ data:
   AUTH0_TENANT_DOMAIN: viewspot-server-dev.eu.auth0.com
   AUTH0_VIEWSPOT_PERMISSIONS_ENABLED: users,roles,pricing,stores,devices,content,analytics,settings
   EXTERNAL_URI: https://vs-studio.eks.mabl.online
-  AWS_REGION: eu-north-1
+  AWS_REGION: us-east-1
   MAILER_FROM: noreply@smithmicro.io
   MAILER_SMTP_SECURE: "true"
   MAILER_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com

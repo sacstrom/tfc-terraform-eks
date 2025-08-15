@@ -1,16 +1,16 @@
 variable "resource_prefix" {
   description = "Prefix for AWS EKS resources (VPCs, EKS cluster/namespace)"
-  default     = "mb-eks"
+  default     = "mvp-dev"
 }
 
 variable "account_id" {
   description = "AWS account ID"
-  default     = "878179636352"
+  default     = "088153174681"
 }
 
 variable "region" {
   description = "AWS region"
-  default     = "eu-north-1"
+  default     = "us-east-1"
 }
 
 variable "vpc_cidr" {
@@ -65,7 +65,7 @@ variable "common_origin_tag" {
 
 variable "common_owner_tag" {
   description = "AWS Tag value for key Owner"
-  default     = "mblomdahl"
+  default     = "steve.strom"
 }
 
 variable "common_purpose_tag" {
