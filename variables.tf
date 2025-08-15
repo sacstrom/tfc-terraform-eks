@@ -50,7 +50,7 @@ variable "vpc_database_subnet_cidr_b" {
 
 variable "eks_ami_type" {
   description = "AMI type for AWS EKS node group instances"
-  default     = "AL2_x86_64"
+  default     = "BOTTLEROCKET_x86_64"
 }
 
 variable "node_group_instance_type" {
