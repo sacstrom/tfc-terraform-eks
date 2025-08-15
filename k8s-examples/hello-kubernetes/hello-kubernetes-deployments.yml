@@ -18,7 +18,7 @@ spec:
           image: paulbouwer/hello-kubernetes:1.10.1
           env:
             - name: MESSAGE
-              value: "Hello world, @mb-eks-cluster path!"
+              value: "Hello world, @mvp-dev-cluster path!"
             - name: RENDER_PATH_PREFIX
               value: /hello-kubernetes/
             - name: HANDLER_PATH_PREFIX
@@ -46,7 +46,7 @@ spec:
           image: paulbouwer/hello-kubernetes:1.10.1
           env:
             - name: MESSAGE
-              value: "Hello world, @mb-eks-cluster subdomain!"
+              value: "Hello world, @mvp-dev-cluster subdomain!"
           ports:
             - containerPort: 8080
 ---

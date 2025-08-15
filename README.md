@@ -16,12 +16,6 @@ You must have access to an AWS account and be authorized to administer many reso
 the AWS and Terraform CLIs installed and configured on your workstation.
 
 
-## Continuous Deployment and Detecting Drift
-
-At the end of the setup procedure, we add a Bamboo build plan for rolling out adjustments and get a nice log trail of
-changes over time. This might also be useful for detecting (and aligning?) configuration drift.
-
-
 ## Getting Started
 
 ### Step 1: Initialize the Base Infrastructure
@@ -288,9 +282,9 @@ Create the `vs7` namespace and RBAC roles `vs7-developer-global-viewer-role` and
 Update your `~/.kube/config-vs7-developer` with credentials for the `vs7-developer-role`:
 
     export KUBECONFIG=~/.kube/config-vs7-developer
-    aws eks update-kubeconfig --profile smsi --name mb-eks-cluster --alias mb-eks-cluster-vs7-developer \
+    aws eks update-kubeconfig --profile sennco --name mvp-dev-cluster --alias mvp-dev-cluster-vs7-developer \
       --region us-east-1 --role-arn arn:aws:iam::088153174681:role/mb-eks-vs7-developer-role
-    # And verify it worked, the command below should output something about cluster name "mb-eks-cluster"
+    # And verify it worked, the command below should output something about cluster name "mvp-dev-cluster"
     kubectl cluster-info dump | grep cluster-name | head -n1
 
 Now the tables are set for low-privileged creation of resources within the `vs7` namespace.
