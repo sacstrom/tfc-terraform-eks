@@ -43,6 +43,20 @@ module "vpc" {
   }
 }
 
+locals {
+  private_subnet_map = {
+    for idx, subnet_id in module.vpc.private_subnets :
+    "private-${idx}" => subnet_id
+  }
+}
+
+locals {
+  database_subnet_map = {
+    for idx, subnet_id in module.vpc.database_subnets :
+    "db-${idx}" => subnet_id
+  }
+}
+
 data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
