@@ -35,7 +35,7 @@ View the sample app pod's status until the `STATUS` becomes `Running`.
 
 Confirm that the data is written to the volume:
 
-    kubectl exec efs-app -- bash -c "cat data/out"
+    kubectl exec efs-app -- sh -c "cat data/out"
 
 Delete the pod and then create it again:
 
@@ -44,6 +44,6 @@ Delete the pod and then create it again:
 
 Verify that the old data is still attached and appended to:
 
-    kubectl exec efs-app -- bash -c "cat data/out"
+    kubectl exec efs-app -- sh -c "cat data/out"
 
 Now go celebrate! :boom:
