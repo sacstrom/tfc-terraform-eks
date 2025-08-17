@@ -15,11 +15,11 @@ the [Nginx Ingress Controller](https://aws.amazon.com/premiumsupport/knowledge-c
 You must have access to an AWS account and be authorized to administer many resources. You must also have
 the AWS and Terraform CLIs installed and configured on your workstation.
 
-The setup instruction presumes that you have a profile named `sennco` in your AWS CLI configuration with your secrets
+The setup instruction presumes that you have a profile named `terraform-mvp` in your AWS CLI configuration with your secrets
 (`~/.aws/config` and `~/.aws/credentials`) that provides access to the Sennco AWS account. If not, login to the AWS
 console, https://088153174681.signin.aws.amazon.com/console, create a "Command Line Interface (CLI)" type AWS Access Key
-and store it safely. (Verify it works by running `aws sts get-caller-identity --profile sennco` and
-`aws s3 ls s3://sennco-mvp-terraform-eks --profile sennco`.)
+and store it safely. (Verify it works by running `aws sts get-caller-identity --profile terraform-mvp` and
+`aws s3 ls s3://sennco-mvp-terraform-eks --profile terraform-mvp`.)
 
 
 ## Getting Started
@@ -34,7 +34,7 @@ and store it safely. (Verify it works by running `aws sts get-caller-identity --
 6. Configure your `kubectl` command-line tool to use the new EKS cluster and keeping the credentials in `./.kubeconfig`:
 
        export KUBECONFIG="$(pwd)/.kubeconfig"
-       export AWS_PROFILE=sennco
+       export AWS_PROFILE=terraform-mvp
        export AWS_REGION=us-east-1
        export CLUSTER_NAME=mvp-dev-cluster
        aws --profile=$AWS_PROFILE eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
@@ -288,7 +288,7 @@ Create the `vs7` namespace and RBAC roles `vs7-developer-global-viewer-role` and
 Update your `~/.kube/config-vs7-developer` with credentials for the `vs7-developer-role`:
 
     export KUBECONFIG=~/.kube/config-vs7-developer
-    aws eks update-kubeconfig --profile sennco --name mvp-dev-cluster --alias mvp-dev-cluster-vs7-developer \
+    aws eks update-kubeconfig --profile terraform-mvp --name mvp-dev-cluster --alias mvp-dev-cluster-vs7-developer \
       --region us-east-1 --role-arn arn:aws:iam::088153174681:role/mb-eks-vs7-developer-role
     # And verify it worked, the command below should output something about cluster name "mvp-dev-cluster"
     kubectl cluster-info dump | grep cluster-name | head -n1
