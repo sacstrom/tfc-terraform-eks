@@ -31,6 +31,7 @@ resource "aws_iam_role" "aws-eks-efs-csi-driver-role" {
         },
         Condition = {
           StringEquals = {
+            "${module.eks.oidc_provider}:aud" = "sts.amazonaws.com",
             "${module.eks.oidc_provider}:sub" : "system:serviceaccount:kube-system:efs-csi-controller-sa"
           }
         }

@@ -9,6 +9,7 @@
         "elasticfilesystem:DescribeMountTargets",
         "elasticfilesystem:CreateAccessPoint",
         "elasticfilesystem:DeleteAccessPoint",
+        "elasticfilesystem:TagResource",
         "ec2:DescribeAvailabilityZones"
       ],
       "Resource": "*"
