@@ -37,6 +37,12 @@ module "eks" {
       min_size     = 2
       max_size     = 8
       desired_size = 2
+
+      iam_role_additional_policies = {
+        worker = aws_iam_policy.worker-policy.arn,
+        ebs = aws_iam_policy.aws-eks-ebs-csi-driver-policy.arn,
+        efs = aws_iam_policy.aws-eks-efs-csi-driver-policy.arn
+      }
     }
 
     two = {
@@ -47,6 +53,12 @@ module "eks" {
       min_size     = 2
       max_size     = 8
       desired_size = 2
+
+      iam_role_additional_policies = {
+        worker = aws_iam_policy.worker-policy.arn,
+        ebs = aws_iam_policy.aws-eks-ebs-csi-driver-policy.arn,
+        efs = aws_iam_policy.aws-eks-efs-csi-driver-policy.arn
+      }
     }
   }
 
@@ -57,6 +69,11 @@ module "eks" {
     {
       userarn  = "arn:aws:iam::088153174681:user/mats.blomdahl"
       username = "mblomdahl"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::088153174681:user/steve.strom"
+      username = "sstrom"
       groups   = ["system:masters"]
     }
   ]

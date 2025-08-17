@@ -12,10 +12,3 @@ resource "aws_iam_policy" "worker-policy" {
     Stack          = var.common_stack_tag
   }
 }
-
-resource "aws_iam_role_policy_attachment" "additional" {
-  for_each = module.eks.eks_managed_node_groups
-
-  policy_arn = aws_iam_policy.worker-policy.arn
-  role       = each.value.iam_role_name
-}
