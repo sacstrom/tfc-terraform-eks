@@ -23,11 +23,6 @@ variable "route53_apex" {
   default     = "viewspotstudio.com"
 }
 
-variable "route53_apex_zone_id" {
-  description = "Zone ID for Route 53 apex hosted zone"
-  default     = "Z01044023I42UCYWWQM1G"
-}
-
 variable "route53_subdomain" {
   description = "Subdomain name for Route 53 hosted zone"
   default     = "mvp-dev"
