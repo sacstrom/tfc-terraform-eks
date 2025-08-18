@@ -7,7 +7,7 @@ terraform {
   }
 
   cloud {
-    organization = "mblomdahl"
+    organization = "sstrom"
 
     workspaces {
       name = "tfc-vs4345-k8s-dns"

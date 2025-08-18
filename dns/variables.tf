@@ -10,27 +10,27 @@ variable "region" {
 
 variable "eks_elb_domain" {
   description = "Domain for EKS ELB"
-  default     = "k8s-ingressn-ingressn-d7a33e1924-2dcfed4179033b4a.elb.us-east-1.amazonaws.com"
+  default     = "k8s-ingressn-ingressn-2a442cba42-0262477c32493f9a.elb.us-east-1.amazonaws.com"
 }
 
 variable "eks_elb_zone_id" {
   description = "Zone ID for EKS ELB"
-  default     = "Z1UDT6IFJ4EJM"
+  default     = "Z26RNL4JYFTOTI"
 }
 
 variable "route53_apex" {
   description = "Domain for Route 53 hosted zone"
-  default     = "smithmicro.io"
+  default     = "viewspotstudio.com"
 }
 
 variable "route53_apex_zone_id" {
   description = "Zone ID for Route 53 apex hosted zone"
-  default     = "Z1TY55FUWSMGVV"
+  default     = "Z01044023I42UCYWWQM1G"
 }
 
 variable "route53_subdomain" {
   description = "Subdomain name for Route 53 hosted zone"
-  default     = "mb-eks"
+  default     = "mvp-dev"
 }
 
 variable "common_origin_tag" {
@@ -40,7 +40,7 @@ variable "common_origin_tag" {
 
 variable "common_owner_tag" {
   description = "AWS Tag value for key Owner"
-  default     = "mblomdahl"
+  default     = "steve.strom"
 }
 
 variable "common_purpose_tag" {
