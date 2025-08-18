@@ -6,12 +6,10 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "sstrom"
-
-    workspaces {
-      name = "tfc-vs4345-k8s-dns"
-    }
+  backend "s3" {
+    bucket = "sennco-mvp-terraform-eks"
+    key    = "mvp-dev-dns/terraform.tfstate"
+    region = "us-east-1"
   }
 
   required_version = ">= 1.3.6"
