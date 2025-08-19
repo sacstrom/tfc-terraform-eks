@@ -22,13 +22,13 @@ Service, and Ingress K8s configs:
     kubectl describe ingress -n demo
 
 Open the address in your browser and expect to be greeted with a "Hello world!" Kubernetes page with SSL encryption,
-deployed on the `/hello-kubernetes/` path (example URL [works](https://eks.mabl.se/hello-kubernetes/)):
+deployed on the `/hello-kubernetes/` path (example URL [works](https://mvp-dev.viewspotstudio.com/hello-kubernetes/)):
 
-    open https://eks.mabl.se/hello-kubernetes/
+    open https://mvp-dev.viewspotstudio.com/hello-kubernetes/
 
 Open the subdomain deployment address in your browser and again expect to be greeted with a "Hello world!" page with
 SSL encryption and a slightly different title message:
 
-    open https://hello-kubernetes.k8s.mabl.online/
+    open https://hello-kubernetes.mvp-dev.viewspotstudio.com/
 
 Now go celebrate! :boom:

@@ -193,13 +193,13 @@ Change directory to `./dns` and apply the Terraform configuration:
     terraform plan
     terraform apply
 
-Verify that `nslookup` returns 2 records for `mb-eks.smithmicro.io`:
+Verify that `nslookup` returns 2 records for `mvp-dev.viewspotstudio.com`:
 
-    nslookup mb-eks.smithmicro.io
+    nslookup mvp-dev.viewspotstudio.com
 
 Verify that `curl` receives a Nginx 404 response:
 
-    curl -v http://mb-eks.smithmicro.io
+    curl -v http://mvp-dev.viewspotstudio.com
 
 
 #### Step 4d: Install Cert-Manager and Configure Certificate Issuer in EKS
@@ -211,7 +211,8 @@ Install Cert-Manager using Helm:
     helm install cert-manager jetstack/cert-manager \
       --namespace cert-manager \
       --create-namespace \
-      --set installCRDs=true
+      --set crds.enabled=true \
+      --set config.featureGates.ACMEHTTP01IngressPathTypeExact=false
 
 Modify the `./k8s-infra/letsencrypt-issuer.yaml` config file by adding your own email address and
 then apply your certificate issuer manifest:

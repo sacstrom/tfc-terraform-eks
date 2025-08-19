@@ -6,11 +6,11 @@ spec:
   acme:
     # Let's Encrypt will use this to contact you about expiring
     # certificates, and issues related to your account.
-    email: mats.blomdahl@gmail.com
+    email: sstrom@sennco.com
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # Secret resource that will be used to store the account's private key.
-      name: letsencrypt-issuer-account-key
+      name: letsencrypt-staging-account-key
     solvers:
       - http01:
           ingress:
@@ -22,10 +22,10 @@ metadata:
   name: letsencrypt-production
 spec:
   acme:
-    email: mats.blomdahl@gmail.com
+    email: sstrom@sennco.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-issuer-account-key
+      name: letsencrypt-production-account-key
     solvers:
       - http01:
           ingress:
