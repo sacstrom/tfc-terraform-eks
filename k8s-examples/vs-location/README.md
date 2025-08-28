@@ -22,7 +22,7 @@ Create a secret with the database credentials:
 
 ## 2. Create the RDS Postgres Database
 
-Modify the `1-database.yml` by replacing the database subnet group name `"mb-eks-rds-subnet-group"` with your
+Modify the `1-database.yml` by replacing the database subnet group name `"mvp-dev-rds-subnet-group"` with your
 own group name:
 
     cd ../../
@@ -57,6 +57,9 @@ Create a secret with the `AUTH0_API_EXPLORER_CLIENT_ID` and `AUTH0_API_EXPLORER_
       --from-literal=client_id="${AUTH0_API_EXPLORER_CLIENT_ID}" \
       --from-literal=client_secret="${AUTH0_API_EXPLORER_CLIENT_SECRET}"
 
+Manually create the session secret
+    openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c32
+
 Create a secret for the cookie `SESSION_SECRET`:
 
     export SESSION_SECRET="myCookieSigningKey"
@@ -64,20 +67,11 @@ Create a secret for the cookie `SESSION_SECRET`:
       location-session-secret \
       --from-literal=secret="${SESSION_SECRET}"
 
-Create a secret for pulling the app container from your private registry:
-
-    export REGISTRY_USERNAME="dev-deploy-ro"
-    export REGISTRY_PASSWORD="myServiceAccountPassword"
-    kubectl create secret -n vs docker-registry viewspot-artifactory-ro \
-      --docker-server=https://smithmicro-viewspot-docker-release-local.jfrog.io/ \
-      --docker-username="$REGISTRY_USERNAME" \
-      --docker-password="$REGISTRY_PASSWORD"
-
 
 ## 4. Create the Deployment, Service, and Ingress for `vs-location`
 
 Modify the `4-location-service.yml` manifest and replace all occurrences of
-app domain `"vs-location.eks.mabl.online"` with your own domain name, then apply the application
+app domain `"vs-location.mvp-dev.viewspotstudio.com"` with your own domain name, then apply the application
 deployment, service and ingress resources:
 
     kubectl apply -f 4-location-service.yml
@@ -91,7 +85,7 @@ _"Successfully created Certificate vs-location-tls-secret"_.
 
 Open the address in your browser and expect to be redirected to the Auth0 identity provider to authenticate:
 
-    open https://vs-location.eks.mabl.online/
+    open https://vs-location.mvp-dev.viewspotstudio.com/
 
 After authenticating, you are redirected to a beautiful Angular UI for administrating your locations. Then go
 celebrating! :boom:

@@ -236,10 +236,10 @@ Identify your own IAM role ARN for the `ack-rds-controller` service account:
 
     echo $(terraform output -raw ack_rds_controller_service_account_iam_role_arn)
 
-Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mb-eks-ack-rds-controller-role"` with
+Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mvp-dev-ack-rds-controller-role"` with
 your own role ARN and `"us-east-1"` with your own region:
 
-    export ACK_RDS_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mb-eks-ack-rds-controller-role
+    export ACK_RDS_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mvp-dev-ack-rds-controller-role
     export AWS_REGION=us-east-1
     helm install --create-namespace -n ack-system \
       oci://public.ecr.aws/aws-controllers-k8s/rds-chart \

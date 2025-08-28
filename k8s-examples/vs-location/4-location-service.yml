@@ -21,11 +21,9 @@ spec:
       labels:
         name: location-service
     spec:
-      imagePullSecrets:
-        - name: viewspot-artifactory-ro
       containers:
         - name: app
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-location-service:6.3.0
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-location-service:6.3.1dev12
           imagePullPolicy: IfNotPresent
           env:
             # Infra variables
@@ -56,7 +54,7 @@ spec:
                   key: password
             # Application-specific
             - name: APP_DOMAIN
-              value: vs-location.eks.mabl.online
+              value: vs-location.mvp-dev.viewspotstudio.com
             - name: LOG_LEVELS
               value: error,warn,log
             - name: NO_COLOR
@@ -105,6 +103,26 @@ spec:
                   key: AUTH0_CONNECTION_AUTH0_USER_DB_ENABLED
             - name: AUTH0_CONNECTION_GOOGLE_OAUTH2_ENABLED
               value: "false"
+            - name: AUTH0_ISSUER_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: location-service-config
+                  key: AUTH0_ISSUER_BASE_URL
+            - name: AUTH0_AUDIENCE
+              valueFrom:
+                configMapKeyRef:
+                  name: location-service-config
+                  key: AUTH0_AUDIENCE
+            - name: AUTH0_SCOPE
+              valueFrom:
+                configMapKeyRef:
+                  name: location-service-config
+                  key: AUTH0_SCOPE
+            - name: TRUST_PROXY
+              valueFrom:
+                configMapKeyRef:
+                  name: location-service-config
+                  key: TRUST_PROXY
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
@@ -168,12 +186,13 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-        - vs-location.eks.mabl.online
+        - vs-location.mvp-dev.viewspotstudio.com
       secretName: vs-location-tls-secret
   rules:
-    - host: vs-location.eks.mabl.online
+    - host: vs-location.mvp-dev.viewspotstudio.com
       http:
         paths:
           - path: /
