@@ -51,7 +51,7 @@ Configure persistent storage using EBS for EKS by following
 the [Amazon EBS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html), summarized below.
 
 Modify the `./k8s-infra/aws-ebs-csi-driver-service-account.yaml` manifest by
-replacing `"arn:aws:iam::088153174681:role/mb-eks-ebs-csi-driver-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mvp-dev-ebs-csi-driver-role"` with your own role ARN:
 
     echo $(terraform output -raw ebs_csi_driver_service_account_iam_role_arn)
 
@@ -70,7 +70,7 @@ Configure persistent storage using EFS for EKS by following
 the [Amazon EFS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html), summarized below.
 
 Modify the `./k8s-infra/aws-efs-csi-driver-service-account.yaml` manifest by
-replacing `"arn:aws:iam::088153174681:role/mb-eks-efs-csi-driver-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mvp-dev-efs-csi-driver-role"` with your own role ARN:
 
     echo $(terraform output -raw efs_csi_driver_service_account_iam_role_arn)
 
@@ -111,7 +111,7 @@ the [Amazon EKS User Guide](https://docs.aws.amazon.com/eks/latest/userguide/aws
 summarized below.
 
 Modify the `./k8s-infra/aws-load-balancer-controller-service-account.yaml` manifest by
-replacing `"arn:aws:iam::088153174681:role/mb-eks-load-balancer-controller-role"` with your own role ARN:
+replacing `"arn:aws:iam::088153174681:role/mvp-dev-load-balancer-controller-role"` with your own role ARN:
 
     echo $(terraform output -raw aws_load_balancer_service_account_iam_role_arn)
 
@@ -262,10 +262,10 @@ Identify your own IAM role ARN for the `ack-rds-controller` service account:
 
     echo $(terraform output -raw ack_s3_controller_service_account_iam_role_arn)
 
-Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mb-eks-ack-s3-controller-role"` with
+Install the `rds-chart` controller, replacing `"arn:aws:iam::088153174681:role/mvp-dev-ack-s3-controller-role"` with
 your own role ARN and `"us-east-1"` with your own region:
 
-    export ACK_S3_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mb-eks-ack-s3-controller-role
+    export ACK_S3_CONTROLLER_IAM_ROLE_ARN=arn:aws:iam::088153174681:role/mvp-dev-ack-s3-controller-role
     export AWS_REGION=us-east-1
     helm install --create-namespace -n ack-system \
       oci://public.ecr.aws/aws-controllers-k8s/s3-chart \
@@ -290,7 +290,7 @@ Update your `~/.kube/config-vs7-developer` with credentials for the `vs7-develop
 
     export KUBECONFIG=~/.kube/config-vs7-developer
     aws eks update-kubeconfig --profile terraform-mvp --name mvp-dev-cluster --alias mvp-dev-cluster-vs7-developer \
-      --region us-east-1 --role-arn arn:aws:iam::088153174681:role/mb-eks-vs7-developer-role
+      --region us-east-1 --role-arn arn:aws:iam::088153174681:role/mvp-dev-vs7-developer-role
     # And verify it worked, the command below should output something about cluster name "mvp-dev-cluster"
     kubectl cluster-info dump | grep cluster-name | head -n1
 

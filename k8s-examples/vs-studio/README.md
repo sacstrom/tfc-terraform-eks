@@ -22,7 +22,7 @@ Create a secret with the database credentials:
 
 ## 2. Create the RDS Postgres Database and S3 Bucket
 
-Modify the `1-database.yml` by replacing the database subnet group name `"mb-eks-rds-subnet-group"` with your
+Modify the `1-database.yml` by replacing the database subnet group name `"mvp-dev-rds-subnet-group"` with your
 own group name:
 
     cd ../../
@@ -37,7 +37,7 @@ Track the status of RDS database creation:
 
     kubectl describe -n vs dbinstance studio-postgres
 
-Modify the `2-bucket.yml` by replacing `"mb-eks-vs-studio"` with your own S3 bucket name and
+Modify the `2-bucket.yml` by replacing `"mvp-dev-vs-studio"` with your own S3 bucket name and
 apply the field export of bucket name into the `studio-s3-bucket` config map:
 
     kubectl apply -f 2-bucket.yml
@@ -87,20 +87,11 @@ Create a secret for the Studio `EXTERNAL_API_ACCESS_KEY`:
       studio-external-api-access-key \
       --from-literal=access_key="${EXTERNAL_API_ACCESS_KEY}"
 
-Create a secret for pulling the app container from your private registry:
-
-    export REGISTRY_USERNAME="dev-deploy-ro"
-    export REGISTRY_PASSWORD="myServiceAccountPassword"
-    kubectl create secret -n vs docker-registry viewspot-artifactory-ro \
-      --docker-server=https://smithmicro-viewspot-docker-release-local.jfrog.io/ \
-      --docker-username="$REGISTRY_USERNAME" \
-      --docker-password="$REGISTRY_PASSWORD"
-
 
 ## 4. Create the Deployment and Service for `studio-config-service`
 
 Modify the `4-studio-config-service.yml` manifest and replace all occurrences of
-app domain `"vs-studio.eks.mabl.online"` with your own domain name, then apply the application
+app domain `"vs-studio.mvp-dev.viewspotstudio.com"` with your own domain name, then apply the application
 deployment and service:
 
     kubectl apply -f 4-studio-config-service.yml
@@ -114,7 +105,7 @@ The `studio-config-service` pods should be marked as ready 2/2.
 ## 5. Create the Deployment and Service for `studio-server-service`
 
 Modify the `5-studio-server-service.yml` manifest and replace all occurrences of
-app domain `"vs-studio.eks.mabl.online"` with your own domain name, then apply the application
+app domain `"vs-studio.mvp-dev.viewspotstudio.com"` with your own domain name, then apply the application
 service account, deployment and service:
 
     kubectl apply -f 5-studio-server-service.yml
@@ -139,7 +130,7 @@ The `studio-nginx-proxy` pods should be marked as ready 2/2.
 ## 7. Create the Ingress for the Services
 
 Modify the `7-studio-ingress.yml` manifest and replace all occurrences of
-app domain `"vs-studio.eks.mabl.online"` with your own domain name, then apply the ingress controller for
+app domain `"vs-studio.mvp-dev.viewspotstudio.com"` with your own domain name, then apply the ingress controller for
 the application:
 
     kubectl apply -f 7-studio-ingress.yml
@@ -151,11 +142,11 @@ _"Successfully created Certificate vs-studio-tls-secret"_.
 
 Open the address in your browser and expect to see health status "ok":
 
-    open https://vs-studio.eks.mabl.online/api/config/admin/health
+    open https://vs-studio.mvp-dev.viewspotstudio.com/api/config/admin/health
 
 Open the address in your browser and expect to be redirected to the Auth0 identity provider to authenticate:
 
-    open https://vs-studio.eks.mabl.online/
+    open https://vs-studio.mvp-dev.viewspotstudio.com/
 
 After authenticating, you are redirected to a beautiful Angular UI for administrating experiences.
 

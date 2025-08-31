@@ -7,7 +7,7 @@ metadata:
   name: studio-s3-bucket
   namespace: vs
 spec:
-  name: mb-eks-vs-studio
+  name: mvp-dev-vs-studio
 ---
 apiVersion: v1
 kind: ConfigMap

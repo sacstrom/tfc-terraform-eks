@@ -10,9 +10,9 @@ spec:
   allocatedStorage: 20
   autoMinorVersionUpgrade: true
   dbInstanceClass: db.t4g.micro
-  dbInstanceIdentifier: mb-eks-vs-studio-rds-postgres
-  dbName: mb_eks_studio
-  dbSubnetGroupName: mb-eks-rds-subnet-group
+  dbInstanceIdentifier: mvp-dev-vs-studio-rds-postgres
+  dbName: mvp_dev_studio
+  dbSubnetGroupName: mvp-dev-rds-subnet-group
   engine: postgres
   engineVersion: "14"
   masterUsername: studio

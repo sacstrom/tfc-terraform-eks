@@ -65,7 +65,7 @@ echo "### Step 2: Configure the AWS Elastic Block Storage for EKS"
 echo "Configure persistent storage using EBS for EKS by following"
 echo "the [Amazon EBS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html), summarized below."
 echo "Modify the ./k8s-infra/aws-ebs-csi-driver-service-account.yaml manifest by"
-echo "replacing "arn:aws:iam::088153174681:role/mb-eks-ebs-csi-driver-role" with your own role ARN:"
+echo "replacing "arn:aws:iam::088153174681:role/mvp-dev-ebs-csi-driver-role" with your own role ARN:"
 echo $(terraform output -raw ebs_csi_driver_service_account_iam_role_arn)
 wait_for_keypress
 
@@ -119,7 +119,7 @@ echo "### Step 3: Configure the AWS Elastic File System Storage for EKS"
 echo "Configure persistent storage using EFS for EKS by following"
 echo "the [Amazon EFS CSI Driver User Guide](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html), summarized below."
 echo "Modify the ./k8s-infra/aws-efs-csi-driver-service-account.yaml manifest by"
-echo "replacing "arn:aws:iam::088153174681:role/mb-eks-efs-csi-driver-role" with your own role ARN:"
+echo "replacing "arn:aws:iam::088153174681:role/mvp-dev-efs-csi-driver-role" with your own role ARN:"
 echo $(terraform output -raw efs_csi_driver_service_account_iam_role_arn)
 wait_for_keypress
 

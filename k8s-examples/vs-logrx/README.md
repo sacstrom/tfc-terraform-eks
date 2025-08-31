@@ -20,15 +20,6 @@ Create a secret with the database credentials:
       logrx-api-access-key \
       --from-literal=access_key="${LOGRX_API_ACCESS_KEY}"
 
-Create a secret for pulling the app container from your private registry:
-
-    export REGISTRY_USERNAME="dev-deploy-ro"
-    export REGISTRY_PASSWORD="myServiceAccountPassword"
-    kubectl create secret -n vs docker-registry viewspot-artifactory-ro \
-      --docker-server=https://smithmicro-viewspot-docker-release-local.jfrog.io/ \
-      --docker-username="$REGISTRY_USERNAME" \
-      --docker-password="$REGISTRY_PASSWORD"
-
 
 ## 2. Create ConfigMaps for the Application
 
@@ -40,7 +31,7 @@ Review the values in `1-logrx-config.yml` config map and adjust it to fit your d
 ## 3. Create the Storage, StatefulSet, Service, and Ingress for `vs-logrx`
 
 Modify the `2-logrx-server.yml` manifest and replace all occurrences of
-app domain `"vs-logrx.eks.mabl.online"` with your own domain name, then apply the application
+app domain `"vs-logrx.mvp-dev.viewspotstudio.com"` with your own domain name, then apply the application
 storage, StatefulSet, service and ingress resources:
 
     kubectl apply -f 2-logrx-server.yml
@@ -54,25 +45,25 @@ _"Successfully created Certificate vs-logrx-tls-secret"_.
 
 Verify that a log entry can be posted to `/v1/log`:
 
-    curl -XPOST https://vs-logrx.eks.mabl.online/v1/log \
+    curl -XPOST https://vs-logrx.mvp-dev.viewspotstudio.com/v1/log \
       -d "_model=LG-M430&app_vn=4.5.24&time=1553148000237"
     echo $?
 
 Verify that a log entry can be posted to `/v2/log` using the API key:
 
     export LOGRX_API_ACCESS_KEY="theApiAccessKey"
-    curl -v -XPOST https://vs-logrx.eks.mabl.online/v2/log \
+    curl -v -XPOST https://vs-logrx.mvp-dev.viewspotstudio.com/v2/log \
       -H "X-Api-Access-Key: $LOGRX_API_ACCESS_KEY" \
       -d "_model=LG-M430&app_vn=4.5.24&time=1553148000237"
 
 Verify that the server returns its build version, host and startup time:
 
-    curl -XGET https://vs-logrx.eks.mabl.online/_config | jq .
+    curl -XGET https://vs-logrx.mvp-dev.viewspotstudio.com/_config | jq .
 
 Get the name of one of the `logrx-server` pods and use it to print the data recorded on storage:
 
     kubectl get pods -n vs
     export LOGRX_POD_NAME=logrx-server-6f9dbc747f-kh78j
-    kubectl exec -n vs $LOGRX_POD_NAME -- bash -c "wc -l /data/* && cat /data/*.qs"
+    kubectl exec -n vs $LOGRX_POD_NAME -- bash -c "wc -l /tmp/qs_logs/* && cat /tmp/qs_logs/*.qs"
 
 **TODO:** Configure the cron jobs to sync up logs to S3, or stick with streaming to Kafka...? :thinking:

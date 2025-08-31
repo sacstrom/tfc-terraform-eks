@@ -69,11 +69,6 @@ module "eks" {
 
   aws_auth_users = [
     {
-      userarn  = "arn:aws:iam::088153174681:user/mats.blomdahl"
-      username = "mblomdahl"
-      groups   = ["system:masters"]
-    },
-    {
       userarn  = "arn:aws:iam::088153174681:user/steve.strom"
       username = "sstrom"
       groups   = ["system:masters"]
@@ -82,7 +77,7 @@ module "eks" {
 
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::088153174681:role/mb-eks-vs7-developer-role"
+      rolearn  = "arn:aws:iam::088153174681:role/mvp-dev-vs7-developer-role"
       username = "vs7-developer-role"
       groups   = ["vs7-developers"]
     }

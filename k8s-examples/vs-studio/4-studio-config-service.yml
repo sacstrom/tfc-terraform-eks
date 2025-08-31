@@ -21,11 +21,9 @@ spec:
       labels:
         name: studio-config-service
     spec:
-      imagePullSecrets:
-        - name: viewspot-artifactory-ro
       containers:
         - name: app
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-pricing-server:6.4.1
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           imagePullPolicy: IfNotPresent
           workingDir: /viewspot/studio/config
           command: [ "node" ]
@@ -59,9 +57,9 @@ spec:
                   key: password
             # Application-specific
             - name: APP_NAME
-              value: vs-studio.eks.mabl.online_config
+              value: vs-studio.mvp-dev.viewspotstudio.com_config
             - name: APP_DOMAIN
-              value: vs-studio.eks.mabl.online
+              value: vs-studio.mvp-dev.viewspotstudio.com
             - name: LOG_LEVELS
               value: error,warn,log
             - name: NO_COLOR

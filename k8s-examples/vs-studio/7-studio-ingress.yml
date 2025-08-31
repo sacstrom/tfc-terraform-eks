@@ -11,12 +11,13 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-production
     nginx.ingress.kubernetes.io/proxy-body-size: 300m
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-        - vs-studio.eks.mabl.online
+        - vs-studio.mvp-dev.viewspotstudio.com
       secretName: vs-studio-tls-secret
   rules:
-    - host: vs-studio.eks.mabl.online
+    - host: vs-studio.mvp-dev.viewspotstudio.com
       http:
         paths:
           - path: /api/config/
@@ -26,7 +27,7 @@ spec:
                 name: studio-config-service
                 port:
                   number: 80
-    - host: vs-studio.eks.mabl.online
+    - host: vs-studio.mvp-dev.viewspotstudio.com
       http:
         paths:
           - path: /

@@ -34,18 +34,17 @@ spec:
         name: logrx-server
     spec:
       terminationGracePeriodSeconds: 3
-      imagePullSecrets:
-        - name: viewspot-artifactory-ro
       containers:
         - name: logrx-server
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-logrx-server:6.0.0p1
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-logrx-server:6.1.0dev12
           imagePullPolicy: IfNotPresent
-          command: [ "/bin/sh" ]
-          args: [ "-c", "gunicorn logrx:app" ]
+          command: ["/bin/sh"]
+          # Ensure /tmp/qs_logs exists, then exec gunicorn
+          args: ["-c", "mkdir -p /tmp/qs_logs && exec gunicorn --bind 0.0.0.0:8080 logrx:app"]
           env:
             # Application-specific
             - name: LOGRX_QS_OUTPUT_DIR
-              value: /data
+              value: /tmp/qs_logs
             - name: LOGRX_ATTCUAT_AUDIT_LOG_ENABLED
               valueFrom:
                 configMapKeyRef:
@@ -94,14 +93,14 @@ spec:
               path: /ping
               port: http
             failureThreshold: 3
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /ping
               port: http
-            failureThreshold: 1
-            initialDelaySeconds: 10
+            failureThreshold: 3
+            initialDelaySeconds: 30
             periodSeconds: 15
           resources:
             limits:
@@ -110,11 +109,14 @@ spec:
               cpu: 5m
               memory: 64Mi
           volumeMounts:
-            - name: data
-              mountPath: /data
+            - name: qs-tmp
+              mountPath: /tmp/qs_logs
             - name: shared-efs
               mountPath: /efs/logrx-data
       volumes:
+        - name: qs-tmp
+          emptyDir:
+            sizeLimit: 2Gi
         - name: shared-efs
           persistentVolumeClaim:
             claimName: logrx-efs-claim
@@ -136,11 +138,12 @@ metadata:
   name: logrx-server
   namespace: vs
 spec:
+  type: ClusterIP
   selector:
     name: logrx-server
-  clusterIP: None
   ports:
-    - port: 80
+    - name: http
+      port: 80
       targetPort: http
       protocol: TCP
 ---
@@ -155,12 +158,13 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
-        - vs-logrx.eks.mabl.online
+        - vs-logrx.mvp-dev.viewspotstudio.com
       secretName: vs-logrx-tls-secret
   rules:
-    - host: vs-logrx.eks.mabl.online
+    - host: vs-logrx.mvp-dev.viewspotstudio.com
       http:
         paths:
           - path: /

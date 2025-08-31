@@ -7,7 +7,7 @@ metadata:
   name: studio-sa
   namespace: vs
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::088153174681:role/mb-eks-viewspot-studio-sa-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::088153174681:role/mvp-dev-eks-viewspot-studio-sa-role
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,11 +32,9 @@ spec:
         name: studio-server-service
     spec:
       serviceAccountName: studio-sa
-      imagePullSecrets:
-        - name: viewspot-artifactory-ro
       containers:
         - name: studio-server
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-pricing-server:6.4.1
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           imagePullPolicy: IfNotPresent
           workingDir: /viewspot/studio/server
           command: [ "node" ]
@@ -182,7 +180,7 @@ spec:
               memory: 144Mi
       initContainers:
         - name: auth0-deploy
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-pricing-server:6.4.1
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           workingDir: /viewspot/studio/server
           command: [ "node" ]
           args: [ "dist/out-tsc/src/scripts/deployAuth0LoginPage.js" ]
@@ -203,7 +201,7 @@ spec:
                   name: studio-auth0-mgmt-api
                   key: client_secret
         - name: auth0-setup
-          image: smithmicro-viewspot-docker-release-local.jfrog.io/viewspot-pricing-server:6.4.1
+          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           workingDir: /viewspot/studio/server
           command: [ "node" ]
           args: [ "dist/out-tsc/src/scripts/setupAuth0.js" ]
