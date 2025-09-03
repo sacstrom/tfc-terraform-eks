@@ -48,6 +48,7 @@ echo "6. Configure your kubectl command-line tool to use the new EKS cluster and
 export KUBECONFIG="$(pwd)/.kubeconfig"
 export AWS_PROFILE=terraform-mvp
 export AWS_REGION=us-east-1
+export AWS_ACCOUNT_ID=602401143452
 export CLUSTER_NAME=mvp-dev-cluster
 aws --profile=$AWS_PROFILE eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 wait_for_keypress
@@ -133,7 +134,7 @@ helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-d
 helm repo update
 helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
     --namespace kube-system \
-    --set image.repository=602401143452.dkr.ecr.$AWS_REGION.amazonaws.com/eks/aws-efs-csi-driver \
+    --set image.repository=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/eks/aws-efs-csi-driver \
     --set controller.serviceAccount.create=false \
     --set controller.serviceAccount.name=efs-csi-controller-sa
 wait_for_keypress

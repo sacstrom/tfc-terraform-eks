@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-location-service:6.3.1dev12
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/viewspot-location-service:6.3.1dev12
           imagePullPolicy: IfNotPresent
           env:
             # Infra variables

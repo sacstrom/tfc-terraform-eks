@@ -36,6 +36,7 @@ and store it safely. (Verify it works by running `aws sts get-caller-identity --
        export KUBECONFIG="$(pwd)/.kubeconfig"
        export AWS_PROFILE=terraform-mvp
        export AWS_REGION=us-east-1
+       export AWS_ACCOUNT_ID=602401143452
        export CLUSTER_NAME=mvp-dev-cluster
        aws --profile=$AWS_PROFILE eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
@@ -85,7 +86,7 @@ replacing `us-east-1` with your region:
     helm repo update
     helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
       --namespace kube-system \
-      --set image.repository=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/aws-efs-csi-driver \
+      --set image.repository=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/eks/aws-efs-csi-driver \
       --set controller.serviceAccount.create=false \
       --set controller.serviceAccount.name=efs-csi-controller-sa
 

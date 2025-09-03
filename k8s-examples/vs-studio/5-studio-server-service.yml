@@ -34,7 +34,7 @@ spec:
       serviceAccountName: studio-sa
       containers:
         - name: studio-server
-          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           imagePullPolicy: IfNotPresent
           workingDir: /viewspot/studio/server
           command: [ "node" ]
@@ -180,7 +180,7 @@ spec:
               memory: 144Mi
       initContainers:
         - name: auth0-deploy
-          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           workingDir: /viewspot/studio/server
           command: [ "node" ]
           args: [ "dist/out-tsc/src/scripts/deployAuth0LoginPage.js" ]
@@ -201,7 +201,7 @@ spec:
                   name: studio-auth0-mgmt-api
                   key: client_secret
         - name: auth0-setup
-          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-pricing-server:6.6.0dev12
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/viewspot-pricing-server:6.6.0dev12
           workingDir: /viewspot/studio/server
           command: [ "node" ]
           args: [ "dist/out-tsc/src/scripts/setupAuth0.js" ]

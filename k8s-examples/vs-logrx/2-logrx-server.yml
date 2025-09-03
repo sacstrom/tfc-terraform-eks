@@ -36,7 +36,7 @@ spec:
       terminationGracePeriodSeconds: 3
       containers:
         - name: logrx-server
-          image: 088153174681.dkr.ecr.us-east-1.amazonaws.com/viewspot-logrx-server:6.1.0dev12
+          image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/viewspot-logrx-server:6.1.0dev12
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
           # Ensure /tmp/qs_logs exists, then exec gunicorn
